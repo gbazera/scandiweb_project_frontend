@@ -14,7 +14,9 @@ export interface Attribute{
 export interface Product{
     id: string,
     name: string,
+    description: string,
     gallery: string[],
+    in_stock: boolean,
     prices: {
         amount: number,
         currency: {

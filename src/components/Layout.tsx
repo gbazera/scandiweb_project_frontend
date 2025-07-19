@@ -1,8 +1,9 @@
 import { useQuery, gql } from '@apollo/client'
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useCart } from 'react-use-cart';
 import CartOverlay from './CartOverlay';
+import logoUrl from '../assets/logo.png';
 
 const GET_CATEGORIES = gql`
   query GetCategories{
@@ -43,6 +44,10 @@ function Layout(){
                     </button>
                 ))}
                 </nav>
+
+                <Link to={`/`} className='absolute left-1/2 transform -translate-x-1/2'>
+                    <img src={logoUrl} alt="logo" className='object-contain object-top' />
+                </Link>
 
                 <button
                     onClick={() => setIsCartOpen(!isCartOpen)}

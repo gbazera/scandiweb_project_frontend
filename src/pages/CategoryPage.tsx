@@ -23,6 +23,7 @@ const GET_CATEGORY_PRODUCTS = gql`
 			id
 			name
 			gallery
+			in_stock
 			prices{
 				amount
 				currency{
@@ -61,7 +62,7 @@ const CategoryPage: React.FC = () => {
 	if (!data?.category) return <p>No products found for this category.</p> 
 
 	return(
-		<div className='px-36'>
+		<div className='px-36 pb-16'>
 			<h1 className='text-4xl mb-20'>{data?.category.name.charAt(0).toUpperCase() + data?.category.name.slice(1)}</h1>
 
 			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-20'>

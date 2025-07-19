@@ -1,6 +1,16 @@
 import type React from "react";
 import { useCart, type Item } from "react-use-cart";
 import type { Attribute } from "../types";
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_ORDER = gql`
+    mutation CreateNewOrder($input: OrderInput!){
+        createOrder(input: $input){
+            success
+            message
+        }
+    }
+`;
 
 interface CartItem extends Item{
     productData: {
@@ -18,10 +28,44 @@ const CartOverlay: React.FC = () => {
         items,
         cartTotal,
         updateItemQuantity,
-        removeItem
+        emptyCart
     } = useCart();
 
     const cartItems = items as CartItem[];
+
+    const [createOrder, { loading }] = useMutation(CREATE_ORDER);
+
+    const handlePlaceOrder = async() => {
+
+        const formattedItems = cartItems.map(item => ({
+            product_id: item.id,
+            quantity: item.quantity,
+            price: item.price,
+            attributes: JSON.stringify(item.selectedAttributes)
+        }));
+
+        try{
+            const { data } = await createOrder({
+                variables: {
+                    input: {
+                        total: cartTotal,
+                        items: formattedItems
+                    }
+                }
+            });
+
+            if(data.createOrder.success){
+                alert('Order has been placed!');
+                emptyCart();
+            }else{
+                console.log(`Error placing order: ${data.createOrder.message}`);
+                alert(`Error placing order: ${data.createOrder.message}`);
+            }
+        } catch (error) {
+            console.error('Error creating order:', error);
+            alert('An error occurred while placing the order. Please try again later.');
+        }
+    }
 
     if(isEmpty) return (
         <div className="absolute top-20 right-5 bg-white p-5 w-100 shadow-lg z-40">
@@ -52,7 +96,7 @@ const CartOverlay: React.FC = () => {
                                                 key={attrItem.id}
                                                 // Conditionally set the styles for 'text' vs 'swatch'
                                                 className={`
-                                                    text-center cursor-pointer text-sm
+                                                    text-center text-sm
                                                     ${attribute.type === 'text'
                                                     ? 'p-2 border font-medium border-black' // Classes for text type
                                                     : 'w-5 h-5' // Classes for swatch type
@@ -103,7 +147,13 @@ const CartOverlay: React.FC = () => {
                     <span>Total</span>
                     <span>${cartTotal.toFixed(2)}</span>
                 </div>
-                <button className="flex-1 p-3 mt-4 bg-green-500 text-white uppercase block w-full">Place Order</button>
+                <button
+                    onClick={handlePlaceOrder}
+                    disabled={loading}
+                    className={`mt-4 ${loading ? 'opacity-50 cursor-not-allowed' : ''} cursor-pointer bg-green-500 text-white uppercase block w-full p-3 disabled:opacity-50 hover:brightness-95 transition-all duration-300`}
+                >
+                    Place Order
+                </button>
             </div>
         </div>
     )

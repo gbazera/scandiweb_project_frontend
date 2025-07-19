@@ -5,6 +5,7 @@ import parse from 'html-react-parser';
 import '../styles/description.css';
 import { useState } from 'react';
 import { useCart } from 'react-use-cart';
+import type { Product } from '../types';
 
 const GET_PRODUCT_DETAILS = gql`
   query GetProduct($id: String!){
@@ -13,6 +14,7 @@ const GET_PRODUCT_DETAILS = gql`
 			name
 			description
 			gallery
+			in_stock
 			attributes{
 				id
 				name
@@ -32,35 +34,6 @@ const GET_PRODUCT_DETAILS = gql`
 		}
   }
 `;
-
-interface AttributeItem{
-	id: string;
-	value: string;
-	display_value: string;
-}
-
-interface Attribute{
-	id: string;
-	name: string;
-	type: string;
-	items: AttributeItem[];
-}
-
-interface Price{
-	amount: number;
-	currency: {
-		symbol: string;
-	}
-}
-
-interface Product{
-	id: string;
-	name: string;
-	description: string;
-	gallery: string[];
-	attributes: Attribute[];
-	prices: Price[];
-}
 
 interface ProductData{
 	product: Product;
@@ -108,6 +81,7 @@ const ProductPage: React.FC = () => {
 
 		addItem(itemToAdd as any);
 		alert(`${product.name} has been added to cart!`);
+		setSelectedAttributes({});
 	}
 
 	const isAddToCartDisabled = data.product.attributes.length !== Object.keys(selectedAttributes).length;
@@ -120,6 +94,12 @@ const ProductPage: React.FC = () => {
 
 			<div className='w-1/2 p-4 flex flex-col gap-8'>
 				<h1 className='text-3xl'>{data.product.name}</h1>
+
+				{!data.product.in_stock && (
+					<div className="font-roboto text-sm uppercase text-red-500 -mt-6">
+						Out of stock
+					</div>
+				)}
 
 				{data.product.attributes.map((attribute) => (
 					<div key={attribute.id} className='flex flex-col gap-2'>
@@ -160,10 +140,10 @@ const ProductPage: React.FC = () => {
 				</div>
 				<button
 					onClick={handleAddToCart}
-					disabled={isAddToCartDisabled}
-					className='mt-4 px-8 py-4 bg-green-500 text-white font-semibold block w-full not-disabled:cursor-pointer disabled:opacity-50 hover:brightness-95'
+					disabled={isAddToCartDisabled || !data.product.in_stock}
+					className={`mt-4 px-8 py-4 ${!data.product.in_stock ? 'bg-red-500 text-white' : 'bg-green-500 text-white'} font-semibold block w-full not-disabled:cursor-pointer disabled:opacity-50 hover:brightness-95`}
 				>
-					ADD TO CART
+					{data.product.in_stock ? 'ADD TO CART' : 'OUT OF STOCK'}
 				</button>
 				<div className="font-roboto product-description">
 					{parse(data.product.description)}
