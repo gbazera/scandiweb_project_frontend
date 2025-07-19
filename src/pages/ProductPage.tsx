@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 import '../styles/description.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from 'react-use-cart';
 import type { Product } from '../types';
 
@@ -49,12 +49,21 @@ const ProductPage: React.FC = () => {
 
 	const { productId } = useParams<{ productId: string }>();
 	const [selectedAttributes, setSelectedAttributes] = useState<{ [key: string]: string }>({});
+	
 
 	if(!productId) return <p>Product ID is missing.</p>;
 
 	const { loading, error, data } = useQuery<ProductData, ProductVars>(GET_PRODUCT_DETAILS, {
 		variables: { id: productId }
 	});
+
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+	useEffect(() => {
+		if(data?.product?.gallery.length){
+			setSelectedImage(data.product.gallery[0]);
+		}
+	}, [data]);
 
 	if (loading) return <p>Loading...</p>
 	if (error) return <p>Error: {error.message}</p>
@@ -87,9 +96,24 @@ const ProductPage: React.FC = () => {
 	const isAddToCartDisabled = data.product.attributes.length !== Object.keys(selectedAttributes).length;
 
 	return(
-		<div className='flex px-36'>
+		<div className='flex px-36 gap-8'>
+			<div className="flex flex-col gap-8" data-testid='product-gallery'>
+				{data.product.gallery.map((imgUrl, index) => (
+					<button key={index} onClick={() => setSelectedImage(imgUrl)}>
+						<img
+							src={imgUrl}
+							alt={`${data.product.name} thumbnail ${index + 1}`}
+							className={`
+								w-20 h-20 object-contain cursor-pointer
+								${selectedImage === imgUrl ? 'outline-2 outline-green-500' : ''}	
+							`}
+						/>
+					</button>
+				))}
+			</div>
+
 			<div className='w-1/2 p-4 bg-white'>
-				<img src={data.product.gallery[0]} alt={data.product.name} className='aspect-square w-full object-cover object-top' />
+				<img src={selectedImage || ''} alt={data.product.name} className='w-full h-auto object-contain' />
 			</div>
 
 			<div className='w-1/2 p-4 flex flex-col gap-8'>
@@ -102,7 +126,11 @@ const ProductPage: React.FC = () => {
 				)}
 
 				{data.product.attributes.map((attribute) => (
-					<div key={attribute.id} className='flex flex-col gap-2'>
+					<div
+						key={attribute.id}
+						className='flex flex-col gap-2'
+						data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}`}
+					>
 						<span className='text-lg font-roboto-condensed font-semibold'>{attribute.name.toUpperCase()}:</span>
 						<div className="flex gap-2">
 							{attribute.items.map((item) => (
@@ -142,10 +170,11 @@ const ProductPage: React.FC = () => {
 					onClick={handleAddToCart}
 					disabled={isAddToCartDisabled || !data.product.in_stock}
 					className={`mt-4 px-8 py-4 ${!data.product.in_stock ? 'bg-red-500 text-white' : 'bg-green-500 text-white'} font-semibold block w-full not-disabled:cursor-pointer disabled:opacity-50 hover:brightness-95`}
+					data-testid='add-to-cart'
 				>
 					{data.product.in_stock ? 'ADD TO CART' : 'OUT OF STOCK'}
 				</button>
-				<div className="font-roboto product-description">
+				<div className="font-roboto product-description" data-testid='product-description'>
 					{parse(data.product.description)}
 				</div>
 			</div>
