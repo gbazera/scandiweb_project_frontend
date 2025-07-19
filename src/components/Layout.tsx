@@ -1,6 +1,8 @@
 import { useQuery, gql } from '@apollo/client'
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useCart } from 'react-use-cart';
+import CartOverlay from './CartOverlay';
 
 const GET_CATEGORIES = gql`
   query GetCategories{
@@ -12,6 +14,9 @@ const GET_CATEGORIES = gql`
 
 function Layout(){
 
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const { totalUniqueItems } = useCart();
+
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
     const { loading, error, data } = useQuery(GET_CATEGORIES);
@@ -21,14 +26,14 @@ function Layout(){
 
     return(
         <div>
-            <header>
-                <nav className='flex items-center py-6 mb-8 px-36 bg-white'>
+            <header className='flex justify-between items-center px-36 mb-8 bg-white relative z-50'>
+                <nav className='flex items-center'>
                 {data.categories.map((category: {name: string}) => (
                     <button
                     key={category.name}
                     onClick={() => setSelectedCategory(category.name)}
                     className={`
-                        px-4 pb-6 mr-8 uppercase cursor-pointer
+                        px-4 py-8 mr-8 uppercase cursor-pointer
                         ${selectedCategory === category.name
                         ? 'text-green-500 border-b-2 border-green-500 font-semibold'
                         : 'text-black border-b-2 border-transparent'}
@@ -38,7 +43,34 @@ function Layout(){
                     </button>
                 ))}
                 </nav>
+
+                <button
+                    onClick={() => setIsCartOpen(!isCartOpen)}
+                    className="relative cursor-pointer"
+                    aria-label='open cart'
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.39 2.78A.66.66 0 004.22 17H18.8a.66.66 0 00.61-.22L21 13M9 21a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+
+                    {totalUniqueItems > 0 && (
+                        <span className='absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center'>
+                            {totalUniqueItems}
+                        </span>
+                    )}
+                </button>
             </header>
+
+            {isCartOpen && (
+                <>
+                    <div
+                        onClick={() => setIsCartOpen(false)}
+                        className='fixed inset-0 bg-black opacity-50 z-10'
+                        aria-label='Close cart overlay'
+                    ></div>
+                    <CartOverlay />
+                </>
+            )}
 
             <main>
                 <Outlet context={{ selectedCategory }} />

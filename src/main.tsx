@@ -7,6 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ProductPage from './pages/ProductPage.tsx'
 import Layout from './components/Layout.tsx'
+import { CartProvider } from 'react-use-cart'
 
 const client = new ApolloClient({
   'uri': 'http://localhost:8080/graphql',
@@ -33,7 +34,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </ApolloProvider>
   </StrictMode>,
 )

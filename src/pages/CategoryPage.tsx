@@ -2,18 +2,7 @@ import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import ProductCard from '../components/ProductCard';
 import { useOutletContext } from 'react-router-dom';
-
-interface Product{
-    id: string,
-    name: string,
-    gallery: string[],
-    prices: {
-        amount: number,
-        currency: {
-            symbol: string
-        }
-    }[]
-}
+import type { Product } from '../types';
 
 interface CategoryData{
 	category:{
@@ -29,18 +18,28 @@ interface CategoryVariables{
 const GET_CATEGORY_PRODUCTS = gql`
   query GetCategory($name: String!){
     category(input: {name: $name}){
+		name
+		products{
+			id
 			name
-			products{
-				id
-				name
-				gallery
-				prices{
-					amount
-					currency{
-						symbol
-					}
+			gallery
+			prices{
+				amount
+				currency{
+					symbol
 				}
 			}
+			attributes{
+				id
+				name
+				type
+				items{
+					id
+					value
+					display_value
+				}
+			}
+		}
     }
   }
 `;
