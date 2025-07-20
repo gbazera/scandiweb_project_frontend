@@ -129,7 +129,7 @@ const ProductPage: React.FC = () => {
 					<div
 						key={attribute.id}
 						className='flex flex-col gap-2'
-						data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-')}`}
+						data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}`}
 					>
 						<span className='text-lg font-roboto-condensed font-semibold'>{attribute.name.toUpperCase()}:</span>
 						<div className="flex gap-2">
