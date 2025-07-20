@@ -33,7 +33,7 @@ function Layout(){
                     <Link
                     key={category.name}
                     onClick={() => setSelectedCategory(category.name)}
-                    to='/'
+                    to={`/${category.name}`}
                     className={`
                         px-4 py-8 mr-8 uppercase cursor-pointer
                         ${selectedCategory === category.name
