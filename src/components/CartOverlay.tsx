@@ -69,14 +69,14 @@ const CartOverlay: React.FC = () => {
     }
 
     if(isEmpty) return (
-        <div className="absolute top-20 right-5 bg-white p-5 w-100 shadow-lg z-40">
+        <div className="absolute top-20 right-5 bg-white p-5 w-100 shadow-lg z-40" data-testid='cart-overlay'>
             <h2 className="font-bold mb-4">My Cart</h2>
             <p>Your cart is empty.</p>
         </div>
     )
 
     return(
-        <div className="absolute top-20 right-5 bg-white p-5 w-auto shadow-lg z-40 max-h-[70vh] overflow-y-auto">
+        <div className="absolute top-20 right-5 bg-white p-5 w-auto shadow-lg z-40 max-h-[70vh] overflow-y-auto" data-testid='cart-overlay'>
             <h2 className="font-bold mb-4">
                 My Bag, <span className="font-light">{items.length} {items.length === 1 ? 'item' : 'items'}</span>
             </h2>

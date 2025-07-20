@@ -137,24 +137,24 @@ const ProductPage: React.FC = () => {
 								<button
 								key={item.id}
 								onClick={() => handleAttributeChange(attribute.name, item.value)}
-								// Conditionally set the styles for 'text' vs 'swatch'
 								className={`
 									text-center cursor-pointer
 									${attribute.type === 'text'
-									? 'px-4 h-12 border font-medium border-black' // Classes for text type
-									: 'w-8 h-8' // Classes for swatch type
+									? 'px-4 h-12 border font-medium border-black'
+									: 'w-8 h-8'
 									}
 									${selectedAttributes[attribute.name] === item.value
 									? (attribute.type === 'text' 
-										? 'bg-black text-white' // Selected style for text
-										: 'outline-2 outline-green-500 outline-offset-1') // Selected style for swatch
+										? 'bg-black text-white'
+										: 'outline-2 outline-green-500 outline-offset-1') 
 									: ''
 									}
 								`}
-								// Conditionally apply the background color for swatches
+								
 								style={attribute.type === 'swatch' ? { backgroundColor: item.value } : {}}
+								data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}-${item.value.replace(/\s+/g, '-').toLowerCase()}`}
 								>
-								{/* Conditionally render the text content */}
+									
 								{attribute.type === 'text' ? item.display_value : ''}
 								</button>
 							))}
