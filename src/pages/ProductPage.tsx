@@ -89,7 +89,6 @@ const ProductPage: React.FC = () => {
 		}
 
 		addItem(itemToAdd as any);
-		alert(`${product.name} has been added to cart!`);
 		setSelectedAttributes({});
 	}
 

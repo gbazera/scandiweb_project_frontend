@@ -56,15 +56,12 @@ const CartOverlay: React.FC = () => {
             });
 
             if(data.createOrder.success){
-                alert('Order has been placed!');
                 emptyCart();
             }else{
                 console.log(`Error placing order: ${data.createOrder.message}`);
-                alert(`Error placing order: ${data.createOrder.message}`);
             }
         } catch (error) {
             console.error('Error creating order:', error);
-            alert('An error occurred while placing the order. Please try again later.');
         }
     }
 

@@ -31,7 +31,6 @@ const ProductCard: React.FC<Props> = ({product}) => {
         };
 
         addItem(itemToAdd as any);
-        alert(`${product.name} has been added to cart!`);
     };
 
     return (
