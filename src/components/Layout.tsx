@@ -22,6 +22,7 @@ function Layout(){
     useEffect(() => {
         if(items.length !== prevItemsCount){
             setIsCartOpen(true);
+            setPrevItemsCount(items.length);
         }
     }, [items.length]);
 
