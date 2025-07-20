@@ -14,6 +14,7 @@ This frontend is built with:
 - **Apollo Client** for GraphQL communication  
 - **react-use-cart** for cart management  
 - **TailwindCSS** for styling  
+- **react-hot-toast** for toast notifications
 - Strict adherence to **testing IDs** to satisfy Auto QA
 
 ---
