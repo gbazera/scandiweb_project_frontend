@@ -129,7 +129,7 @@ const ProductPage: React.FC = () => {
 					<div
 						key={attribute.id}
 						className='flex flex-col gap-2'
-						data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}`}
+						data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-')}`}
 					>
 						<span className='text-lg font-roboto-condensed font-semibold'>{attribute.name.toUpperCase()}:</span>
 						<div className="flex gap-2">
@@ -152,7 +152,7 @@ const ProductPage: React.FC = () => {
 								`}
 								
 								style={attribute.type === 'swatch' ? { backgroundColor: item.value } : {}}
-								data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}-${item.value.replace(/\s+/g, '-').toLowerCase()}`}
+								data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-')}-${item.value.replace(/\s+/g, '-')}`}
 								>
 									
 								{attribute.type === 'text' ? item.display_value : ''}
