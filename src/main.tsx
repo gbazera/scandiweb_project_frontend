@@ -10,7 +10,7 @@ import Layout from './components/Layout.tsx'
 import { CartProvider } from 'react-use-cart'
 
 const client = new ApolloClient({
-  'uri': 'http://localhost:8080/graphql',
+  'uri': 'https://scandiwebprojectbackend-production.up.railway.app/graphql',
   cache: new InMemoryCache()
 })
 
