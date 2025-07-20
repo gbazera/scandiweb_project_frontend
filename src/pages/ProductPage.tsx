@@ -152,7 +152,7 @@ const ProductPage: React.FC = () => {
 								`}
 								
 								style={attribute.type === 'swatch' ? { backgroundColor: item.value } : {}}
-								data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-')}-${item.value.replace(/\s+/g, '-')}`}
+								data-testid={`product-attribute-${attribute.name.replace(/\s+/g, '-').toLowerCase()}-${item.value.replace(/\s+/g, '-')}`}
 								>
 									
 								{attribute.type === 'text' ? item.display_value : ''}
