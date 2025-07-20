@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import parse from 'html-react-parser'
 import '../styles/description.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useCart } from 'react-use-cart'
 import type { Product } from '../types'
 
@@ -60,13 +60,7 @@ const ProductPage: React.FC = () => {
 		}
 	)
 
-	const [selectedImage, setSelectedImage] = useState<string | null>(null)
-
-	useEffect(() => {
-		if (data?.product?.gallery.length) {
-			setSelectedImage(data.product.gallery[0])
-		}
-	}, [data])
+	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 
 	if (loading) return <p>Loading...</p>
 	if (error) return <p>Error: {error.message}</p>
@@ -98,6 +92,16 @@ const ProductPage: React.FC = () => {
 	const isAddToCartDisabled =
 		data.product.attributes.length !== Object.keys(selectedAttributes).length
 
+	const gallery = data.product.gallery
+
+	const handleNextImage = () => {
+		setSelectedImageIndex((prev) => Math.min(prev + 1, gallery.length - 1))
+	}
+
+	const handlePrevImage = () => {
+		setSelectedImageIndex((prev) => Math.max(prev - 1, 0))
+	}
+
 	return (
 		<div className='flex px-36 gap-8'>
 			<div
@@ -107,26 +111,73 @@ const ProductPage: React.FC = () => {
 				{data.product.gallery.map((imgUrl, index) => (
 					<button
 						key={index}
-						onClick={() => setSelectedImage(imgUrl)}
+						onClick={() => setSelectedImageIndex(index)}
 					>
 						<img
 							src={imgUrl}
 							alt={`${data.product.name} thumbnail ${index + 1}`}
 							className={`
 								w-20 h-20 object-contain cursor-pointer
-								${selectedImage === imgUrl ? 'outline-2 outline-green-500' : ''}	
+								${selectedImageIndex === index ? 'outline-2 outline-green-500' : ''}	
 							`}
 						/>
 					</button>
 				))}
 			</div>
 
-			<div className='w-1/2 p-4 bg-white'>
+			<div className='w-1/2 p-4 bg-white relative'>
 				<img
-					src={selectedImage || ''}
+					src={gallery[selectedImageIndex] || ''}
 					alt={data.product.name}
 					className='w-full h-auto object-contain'
 				/>
+
+				{gallery.length > 1 && (
+					<div className='absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4'>
+						<button
+							onClick={handlePrevImage}
+							disabled={selectedImageIndex === 0}
+							className='bg-black/75 text-white w-12 h-12 flex justify-center items-center not-disabled:cursor-pointer hover:opacity-75 disabled:opacity-25'
+							aria-label='Previous image'
+						>
+							<svg
+								width='24'
+								height='24'
+								viewBox='0 0 24 24'
+							>
+								<path
+									fill='none'
+									stroke='currentColor'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									strokeWidth='2'
+									d='M15 19l-7-7 7-7'
+								/>
+							</svg>
+						</button>
+						<button
+							onClick={handleNextImage}
+							disabled={selectedImageIndex === gallery.length - 1}
+							className='bg-black/75 text-white w-12 h-12 flex justify-center items-center not-disabled:cursor-pointer hover:opacity-75 disabled:opacity-25'
+							aria-label='Next image'
+						>
+							<svg
+								width='24'
+								height='24'
+								viewBox='0 0 24 24'
+							>
+								<path
+									fill='none'
+									stroke='currentColor'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									strokeWidth='2'
+									d='M9 5l7 7-7 7'
+								/>
+							</svg>
+						</button>
+					</div>
+				)}
 			</div>
 
 			<div className='w-1/2 p-4 flex flex-col gap-8'>
