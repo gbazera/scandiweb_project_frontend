@@ -2,6 +2,7 @@ import type React from 'react'
 import { useCart, type Item } from 'react-use-cart'
 import type { Attribute } from '../types'
 import { gql, useMutation } from '@apollo/client'
+import toast from 'react-hot-toast'
 
 const CREATE_ORDER = gql`
 	mutation CreateNewOrder($input: OrderInput!) {
@@ -49,11 +50,13 @@ const CartOverlay: React.FC = () => {
 
 			if (data.createOrder.success) {
 				emptyCart()
+				toast.success('Order placed successfully!')
 			} else {
-				console.log(`Error placing order: ${data.createOrder.message}`)
+				toast.error(`Order failed: ${data.createOrder.message}`)
 			}
 		} catch (error) {
 			console.error('Error creating order:', error)
+			toast.error('An error occurred while placing the order.')
 		}
 	}
 

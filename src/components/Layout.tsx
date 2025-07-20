@@ -4,6 +4,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { useCart } from 'react-use-cart'
 import CartOverlay from './CartOverlay'
 import logoUrl from '../assets/logo.png'
+import { Toaster } from 'react-hot-toast'
 
 const GET_CATEGORIES = gql`
 	query GetCategories {
@@ -115,6 +116,8 @@ function Layout() {
 			<main>
 				<Outlet context={{ selectedCategory }} />
 			</main>
+
+			<Toaster position='bottom-right' />
 		</div>
 	)
 }
