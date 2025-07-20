@@ -1,8 +1,7 @@
-import CategoryPage from './pages/CategoryPage';
+import CategoryPage from './pages/CategoryPage'
 
 function App() {
-
-  return <CategoryPage />;
+	return <CategoryPage />
 }
 
 export default App
