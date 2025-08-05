@@ -63,69 +63,66 @@ const CartOverlay: React.FC = () => {
 	if (isEmpty)
 		return (
 			<div
-				className='absolute top-20 right-5 bg-white p-5 w-100 shadow-lg z-40'
-				data-testid='cart-overlay'
+				className="absolute top-20 right-5 bg-white p-5 w-100 shadow-lg z-40"
+				data-testid="cart-overlay"
 			>
-				<h2 className='font-bold mb-4'>My Cart</h2>
+				<h2 className="font-bold mb-4">My Cart</h2>
 				<p>Your cart is empty.</p>
 			</div>
 		)
 
 	return (
 		<div
-			className='absolute top-20 right-5 bg-white p-5 w-auto shadow-lg z-40 max-h-[70vh] overflow-y-auto'
-			data-testid='cart-overlay'
+			className="absolute top-20 right-5 bg-white p-5 w-auto shadow-lg z-40 max-h-[70vh] overflow-y-auto"
+			data-testid="cart-overlay"
 		>
-			<h2 className='font-bold mb-4'>
+			<h2 className="font-bold mb-4">
 				My Bag,{' '}
-				<span className='font-light'>
+				<span className="font-light">
 					{items.length} {items.length === 1 ? 'item' : 'items'}
 				</span>
 			</h2>
 
-			<div className='flex flex-col gap-8'>
+			<div className="flex flex-col gap-8">
 				{cartItems.map((item) => (
 					<div
 						key={item.id}
-						className='flex gap-4 not-last:border-b not-last:pb-8 border-gray-300'
+						className="flex gap-4 not-last:border-b not-last:pb-8 border-gray-300"
 					>
-						<div className='flex-1'>
-							<p className='text-lg'>{item.productData.name}</p>
-							<p className='font-semibold'>${item.price.toFixed(2)}</p>
+						<div className="flex-1">
+							<p className="text-lg">{item.productData.name}</p>
+							<p className="font-semibold">${item.price.toFixed(2)}</p>
 							<div>
 								{item.productData.attributes.map((attribute) => (
 									<div
 										key={attribute.id}
-										className='mt-4'
+										className="mt-4"
 										data-testid={`cart-item-attribute-${attribute.name
 											.replace(/\s+/g, '-')
 											.toLowerCase()}`}
 									>
-										<span className='text-sm'>{attribute.name}:</span>
-										<div className='flex gap-2 mt-2'>
+										<span className="text-sm">{attribute.name}:</span>
+										<div className="flex gap-2 mt-2">
 											{attribute.items.map((attrItem) => (
 												<div
 													key={attrItem.id}
 													className={`
-                                                        text-center text-sm
-                                                        ${
-																													attribute.type ===
-																													'text'
-																														? 'p-2 border font-medium border-black'
-																														: 'w-5 h-5'
-																												}
-                                                        ${
-																													item
-																														.selectedAttributes[
-																														attribute.name
-																													] === attrItem.value
-																														? attribute.type ===
-																														  'text'
-																															? 'bg-black text-white'
-																															: 'outline-2 outline-green-500 outline-offset-1'
-																														: ''
-																												}
-                                                    `}
+														text-center text-sm
+														${
+														attribute.type === 'text'
+															? 'p-2 border font-medium border-black'
+															: 'w-5 h-5'
+														}
+															${
+															item.selectedAttributes[
+																attribute.name
+															] === attrItem.value
+																? attribute.type === 'text'
+																	? 'bg-black text-white'
+																	: 'outline-2 outline-green-500 outline-offset-1'
+																: ''
+														}
+													`}
 													style={
 														attribute.type === 'swatch'
 															? { backgroundColor: attrItem.value }
@@ -135,15 +132,15 @@ const CartOverlay: React.FC = () => {
 														item.selectedAttributes[attribute.name] ===
 														attrItem.value
 															? `cart-item-attribute-${attribute.name
-																	.replace(/\s+/g, '-')
-																	.toLowerCase()}-${attribute.name
-																	.replace(/\s+/g, '-')
-																	.toLowerCase()}-selected`
+																.replace(/\s+/g, '-')
+																.toLowerCase()}-${attribute.name
+																.replace(/\s+/g, '-')
+																.toLowerCase()}-selected`
 															: `cart-item-attribute-${attribute.name
-																	.replace(/\s+/g, '-')
-																	.toLowerCase()}-${attribute.name
-																	.replace(/\s+/g, '-')
-																	.toLowerCase()}`
+																.replace(/\s+/g, '-')
+																.toLowerCase()}-${attribute.name
+																.replace(/\s+/g, '-')
+																.toLowerCase()}`
 													}
 												>
 													{attribute.type === 'text'
@@ -157,21 +154,18 @@ const CartOverlay: React.FC = () => {
 							</div>
 						</div>
 
-						<div className='flex flex-col items-center justify-between'>
+						<div className="flex flex-col items-center justify-between">
 							<button
 								onClick={() => {
 									if (item.quantity)
 										updateItemQuantity(item.id, item.quantity + 1)
 								}}
-								className='w-8 h-8 border border-black text-2xl cursor-pointer'
-								data-testid='cart-item-amount-increase'
+								className="w-8 h-8 border border-black text-2xl cursor-pointer"
+								data-testid="cart-item-amount-increase"
 							>
 								+
 							</button>
-							<span
-								className='text-lg font-semibold'
-								data-testid='cart-item-amount'
-							>
+							<span className="text-lg font-semibold" data-testid="cart-item-amount">
 								{item.quantity}
 							</span>
 							<button
@@ -179,8 +173,8 @@ const CartOverlay: React.FC = () => {
 									if (item.quantity)
 										updateItemQuantity(item.id, item.quantity - 1)
 								}}
-								className='w-8 h-8 border border-black text-2xl cursor-pointer'
-								data-testid='cart-item-amount-decrease'
+								className="w-8 h-8 border border-black text-2xl cursor-pointer"
+								data-testid="cart-item-amount-decrease"
 							>
 								-
 							</button>
@@ -189,16 +183,16 @@ const CartOverlay: React.FC = () => {
 						<img
 							src={item.productData.gallery[0]}
 							alt={item.name}
-							className='w-48 min-h-full object-contain object-top'
+							className="w-48 min-h-full object-contain object-top"
 						/>
 					</div>
 				))}
 			</div>
 
-			<div className='mt-6'>
-				<div className='flex justify-between font-bold'>
+			<div className="mt-6">
+				<div className="flex justify-between font-bold">
 					<span>Total</span>
-					<span data-testid='cart-total'>${cartTotal.toFixed(2)}</span>
+					<span data-testid="cart-total">${cartTotal.toFixed(2)}</span>
 				</div>
 				<button
 					onClick={handlePlaceOrder}

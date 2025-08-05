@@ -46,7 +46,6 @@ const GET_CATEGORY_PRODUCTS = gql`
 `
 
 const CategoryPage: React.FC = () => {
-	
 	const { selectedCategory = 'all' } = useParams<{ selectedCategory: string }>()
 
 	const { loading, error, data } = useQuery<CategoryData, CategoryVariables>(
@@ -61,18 +60,14 @@ const CategoryPage: React.FC = () => {
 	if (!data?.category) return <p>No products found for this category.</p>
 
 	return (
-		<div className='px-36 pb-16'>
-			<h1 className='text-4xl mb-20'>
-				{data?.category.name.charAt(0).toUpperCase() +
-					data?.category.name.slice(1)}
+		<div className="px-36 pb-16">
+			<h1 className="text-4xl mb-20">
+				{data?.category.name.charAt(0).toUpperCase() + data?.category.name.slice(1)}
 			</h1>
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-20'>
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-20">
 				{data?.category.products.map((product) => (
-					<ProductCard
-						key={product.id}
-						product={product}
-					/>
+					<ProductCard key={product.id} product={product} />
 				))}
 			</div>
 		</div>

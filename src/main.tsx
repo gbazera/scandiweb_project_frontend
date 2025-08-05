@@ -21,7 +21,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Navigate to='all' replace />,
+				element: <Navigate to="all" replace />,
 			},
 			{
 				path: 'product/:productId',

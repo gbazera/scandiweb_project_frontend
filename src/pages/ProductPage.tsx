@@ -53,12 +53,9 @@ const ProductPage: React.FC = () => {
 
 	if (!productId) return <p>Product ID is missing.</p>
 
-	const { loading, error, data } = useQuery<ProductData, ProductVars>(
-		GET_PRODUCT_DETAILS,
-		{
-			variables: { id: productId },
-		}
-	)
+	const { loading, error, data } = useQuery<ProductData, ProductVars>(GET_PRODUCT_DETAILS, {
+		variables: { id: productId },
+	})
 
 	const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
 
@@ -75,8 +72,7 @@ const ProductPage: React.FC = () => {
 
 	const handleAddToCart = () => {
 		const product = data!.product
-		const uniqueItemId =
-			product.id + JSON.stringify(Object.entries(selectedAttributes).sort())
+		const uniqueItemId = product.id + JSON.stringify(Object.entries(selectedAttributes).sort())
 
 		const itemToAdd = {
 			id: uniqueItemId,
@@ -103,16 +99,10 @@ const ProductPage: React.FC = () => {
 	}
 
 	return (
-		<div className='flex px-36 gap-8'>
-			<div
-				className='flex flex-col gap-8'
-				data-testid='product-gallery'
-			>
+		<div className="flex px-36 gap-8">
+			<div className="flex flex-col gap-8" data-testid="product-gallery">
 				{data.product.gallery.map((imgUrl, index) => (
-					<button
-						key={index}
-						onClick={() => setSelectedImageIndex(index)}
-					>
+					<button key={index} onClick={() => setSelectedImageIndex(index)}>
 						<img
 							src={imgUrl}
 							alt={`${data.product.name} thumbnail ${index + 1}`}
@@ -125,11 +115,14 @@ const ProductPage: React.FC = () => {
 				))}
 			</div>
 
-			<div className='relative flex items-center justify-center' style={{ minHeight: 500, height: 500, maxHeight: 600 }}>
+			<div
+				className="relative flex items-center justify-center"
+				style={{ minHeight: 500, height: 500, maxHeight: 600 }}
+			>
 				<img
 					src={gallery[selectedImageIndex] || ''}
 					alt={data.product.name}
-					className='w-full h-auto object-contain'
+					className="w-full h-auto object-contain"
 					style={{ maxHeight: '100%', maxWidth: '100%' }}
 				/>
 
@@ -138,26 +131,52 @@ const ProductPage: React.FC = () => {
 						<button
 							onClick={handlePrevImage}
 							disabled={selectedImageIndex === 0}
-							className='bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75'
+							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-6 h-6"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.75 19.5L8.25 12l7.5-7.5"
+								/>
+							</svg>
 						</button>
 						<button
 							onClick={handleNextImage}
 							disabled={selectedImageIndex === gallery.length - 1}
 							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-6 h-6"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M8.25 4.5l7.5 7.5-7.5 7.5"
+								/>
+							</svg>
 						</button>
 					</div>
 				)}
 			</div>
 
-			<div className='w-1/2 p-4 flex flex-col gap-8'>
-				<h1 className='text-3xl'>{data.product.name}</h1>
+			<div className="w-1/2 p-4 flex flex-col gap-8">
+				<h1 className="text-3xl">{data.product.name}</h1>
 
 				{!data.product.in_stock && (
-					<div className='font-roboto text-sm uppercase text-red-500 -mt-6'>
+					<div className="font-roboto text-sm uppercase text-red-500 -mt-6">
 						Out of stock
 					</div>
 				)}
@@ -165,15 +184,15 @@ const ProductPage: React.FC = () => {
 				{data.product.attributes.map((attribute) => (
 					<div
 						key={attribute.id}
-						className='flex flex-col gap-2'
+						className="flex flex-col gap-2"
 						data-testid={`product-attribute-${attribute.name
 							.replace(/\s+/g, '-')
 							.toLowerCase()}`}
 					>
-						<span className='text-lg font-roboto-condensed font-semibold'>
+						<span className="text-lg font-roboto-condensed font-semibold">
 							{attribute.name.toUpperCase()}:
 						</span>
-						<div className='flex gap-2'>
+						<div className="flex gap-2">
 							{attribute.items.map((item) => (
 								<button
 									key={item.id}
@@ -182,11 +201,7 @@ const ProductPage: React.FC = () => {
 									}
 									className={`
 									text-center cursor-pointer
-									${
-										attribute.type === 'text'
-											? 'px-4 h-12 border font-medium border-black'
-											: 'w-8 h-8'
-									}
+									${attribute.type === 'text' ? 'px-4 h-12 border font-medium border-black' : 'w-8 h-8'}
 									${
 										selectedAttributes[attribute.name] === item.value
 											? attribute.type === 'text'
@@ -211,11 +226,9 @@ const ProductPage: React.FC = () => {
 					</div>
 				))}
 
-				<div className='flex flex-col gap-2'>
-					<span className='text-lg font-roboto-condensed font-semibold'>
-						PRICE:
-					</span>
-					<p className='text-2xl font-semibold'>
+				<div className="flex flex-col gap-2">
+					<span className="text-lg font-roboto-condensed font-semibold">PRICE:</span>
+					<p className="text-2xl font-semibold">
 						{data.product.prices[0].currency.symbol}
 						{data.product.prices[0].amount.toFixed(2)}
 					</p>
@@ -224,18 +237,13 @@ const ProductPage: React.FC = () => {
 					onClick={handleAddToCart}
 					disabled={isAddToCartDisabled || !data.product.in_stock}
 					className={`mt-4 px-8 py-4 ${
-						!data.product.in_stock
-							? 'bg-red-500 text-white'
-							: 'bg-green-500 text-white'
+						!data.product.in_stock ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
 					} font-semibold block w-full not-disabled:cursor-pointer disabled:opacity-50 hover:brightness-95`}
-					data-testid='add-to-cart'
+					data-testid="add-to-cart"
 				>
 					{data.product.in_stock ? 'ADD TO CART' : 'OUT OF STOCK'}
 				</button>
-				<div
-					className='font-roboto product-description'
-					data-testid='product-description'
-				>
+				<div className="font-roboto product-description" data-testid="product-description">
 					{parse(data.product.description)}
 				</div>
 			</div>
