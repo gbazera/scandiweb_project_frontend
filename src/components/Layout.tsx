@@ -1,6 +1,6 @@
 import { useQuery, gql } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { Link, Outlet, useParams } from 'react-router-dom'
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
 import { useCart } from 'react-use-cart'
 import CartOverlay from './CartOverlay'
 import logoUrl from '../assets/logo.png'
@@ -16,8 +16,13 @@ const GET_CATEGORIES = gql`
 
 function Layout() {
 	const [isCartOpen, setIsCartOpen] = useState(false)
+	const location = useLocation()
 	const { totalUniqueItems, items } = useCart()
 	const [prevItemsCount, setPrevItemsCount] = useState(items.length)
+
+	useEffect(() =>{
+		setIsCartOpen(false)
+	}, [location])
 
 	useEffect(() => {
 		if (items.length !== prevItemsCount) {
