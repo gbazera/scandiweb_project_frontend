@@ -117,7 +117,7 @@ const ProductPage: React.FC = () => {
 
 			<div
 				className="relative flex items-center justify-center"
-				style={{ minHeight: 500, height: 500, maxHeight: 600 }}
+				style={{ height: 500, width: 600 }}
 			>
 				<img
 					src={gallery[selectedImageIndex] || ''}
@@ -131,7 +131,7 @@ const ProductPage: React.FC = () => {
 						<button
 							onClick={handlePrevImage}
 							disabled={selectedImageIndex === 0}
-							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75"
+							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 disabled:cursor-default hover:bg-black/75"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +151,7 @@ const ProductPage: React.FC = () => {
 						<button
 							onClick={handleNextImage}
 							disabled={selectedImageIndex === gallery.length - 1}
-							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75"
+							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 disabled:cursor-default hover:bg-black/75"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
