@@ -1,13 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import ProductPage from './pages/ProductPage.tsx'
 import Layout from './components/Layout.tsx'
 import { CartProvider } from 'react-use-cart'
+import CategoryPage from './pages/CategoryPage.tsx'
 
 const client = new ApolloClient({
 	uri: 'https://scandiwebprojectbackend-production.up.railway.app/graphql',
@@ -21,15 +21,15 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <App />,
+				element: <Navigate to='all' replace />,
 			},
 			{
 				path: 'product/:productId',
 				element: <ProductPage />,
 			},
 			{
-				path: '/:category',
-				element: <App />,
+				path: '/:selectedCategory',
+				element: <CategoryPage />,
 			},
 		],
 	},

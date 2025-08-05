@@ -1,6 +1,6 @@
 import { useQuery, gql } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useParams } from 'react-router-dom'
 import { useCart } from 'react-use-cart'
 import CartOverlay from './CartOverlay'
 import logoUrl from '../assets/logo.png'
@@ -26,7 +26,7 @@ function Layout() {
 		}
 	}, [items.length])
 
-	const [selectedCategory, setSelectedCategory] = useState<string>('all')
+	const { selectedCategory } = useParams<{ selectedCategory: string }>()
 
 	const { loading, error, data } = useQuery(GET_CATEGORIES)
 
@@ -40,7 +40,6 @@ function Layout() {
 					{data.categories.map((category: { name: string }) => (
 						<Link
 							key={category.name}
-							onClick={() => setSelectedCategory(category.name)}
 							to={`/${category.name}`}
 							className={`
                         px-4 py-8 mr-8 uppercase cursor-pointer

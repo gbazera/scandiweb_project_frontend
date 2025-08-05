@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import ProductCard from '../components/ProductCard'
-import { useOutletContext } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import type { Product } from '../types'
 
 interface CategoryData {
@@ -45,12 +45,9 @@ const GET_CATEGORY_PRODUCTS = gql`
 	}
 `
 
-interface OutletContext {
-	selectedCategory: string
-}
-
 const CategoryPage: React.FC = () => {
-	const { selectedCategory } = useOutletContext<OutletContext>()
+	
+	const { selectedCategory = 'all' } = useParams<{ selectedCategory: string }>()
 
 	const { loading, error, data } = useQuery<CategoryData, CategoryVariables>(
 		GET_CATEGORY_PRODUCTS,
