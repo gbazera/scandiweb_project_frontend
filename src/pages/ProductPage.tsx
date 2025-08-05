@@ -125,56 +125,29 @@ const ProductPage: React.FC = () => {
 				))}
 			</div>
 
-			<div className='w-1/2 p-4 bg-white relative'>
+			<div className='relative flex items-center justify-center' style={{ minHeight: 500, height: 500, maxHeight: 600 }}>
 				<img
 					src={gallery[selectedImageIndex] || ''}
 					alt={data.product.name}
 					className='w-full h-auto object-contain'
+					style={{ maxHeight: '100%', maxWidth: '100%' }}
 				/>
 
 				{gallery.length > 1 && (
-					<div className='absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4'>
+					<div className="absolute inset-0 flex items-center justify-between px-4">
 						<button
 							onClick={handlePrevImage}
 							disabled={selectedImageIndex === 0}
-							className='bg-black/75 text-white w-12 h-12 flex justify-center items-center not-disabled:cursor-pointer hover:opacity-75 disabled:opacity-25'
-							aria-label='Previous image'
+							className='bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75'
 						>
-							<svg
-								width='24'
-								height='24'
-								viewBox='0 0 24 24'
-							>
-								<path
-									fill='none'
-									stroke='currentColor'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth='2'
-									d='M15 19l-7-7 7-7'
-								/>
-							</svg>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
 						</button>
 						<button
 							onClick={handleNextImage}
 							disabled={selectedImageIndex === gallery.length - 1}
-							className='bg-black/75 text-white w-12 h-12 flex justify-center items-center not-disabled:cursor-pointer hover:opacity-75 disabled:opacity-25'
-							aria-label='Next image'
+							className="bg-black/50 text-white p-2 cursor-pointer disabled:opacity-25 hover:bg-black/75"
 						>
-							<svg
-								width='24'
-								height='24'
-								viewBox='0 0 24 24'
-							>
-								<path
-									fill='none'
-									stroke='currentColor'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth='2'
-									d='M9 5l7 7-7 7'
-								/>
-							</svg>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
 						</button>
 					</div>
 				)}
